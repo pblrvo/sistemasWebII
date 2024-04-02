@@ -7,4 +7,4 @@
 - Joaquin Moreno
 
 ## Temática:
-Venta de Videojuegos
+Videojuegos en steam
