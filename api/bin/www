@@ -4,9 +4,12 @@
  * Module dependencies.
  */
 
+require('dotenv').config()
 var app = require('../app');
-var debug = require('debug')('api:server');
+var debug = require('debug')('micine:server');
 var http = require('http');
+
+require('../db/conn').connectToDatabase();
 
 /**
  * Get port from environment and store in Express.
