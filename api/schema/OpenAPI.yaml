@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: Gametrade
+  description: |
+    API de nuestra página de intercambio de videojuegos
+  version: 1.0.0
+tags:
+  - name: Gametrade
+paths:
+  /usuarios/{usuario_id}/perfil:
+    get:
+      summary: Obtener perfil de usuario
+      description: Obtiene el perfil único de un usuario.
+      parameters:
+        - name: usuario_id
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Perfil de usuario obtenido exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/perfilUsuario"
+  /usuarios/{usuario_id}/biblioteca:
+    get:
+      summary: Obtener juegos en la biblioteca de un usuario
+      description: Obtiene todos los juegos adquiridos por el usuario.
+      parameters:
+        - name: usuario_id
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Juegos en la biblioteca obtenidos exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juegosBiblioteca"
+    post:
+      summary: Añadir juego a la biblioteca de un usuario
+      description: Añade un nuevo juego a la biblioteca del usuario.
+      parameters:
+        - name: usuario_id
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/juego"
+      responses:
+        "201":
+          description: Juego añadido exitosamente a la biblioteca del usuario.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+  /usuarios/{usuario_id}/biblioteca/{juego_id}:
+    parameters:
+      - name: usuario_id
+        in: path
+        description: ID del usuario
+        required: true
+        schema:
+          type: string
+      - name: juego_id
+        in: path
+        description: ID del juego
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Obtener información de un juego en la biblioteca del usuario
+      description: Obtiene información detallada de un juego en la biblioteca del usuario.
+      responses:
+        "200":
+          description: Información del juego obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+        "404":
+          description: Juego no encontrado en la biblioteca del usuario.
+    put:
+      summary: Modificar información de un juego en la biblioteca del usuario
+      description: Modifica la información de un juego en la biblioteca del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/juego"
+      responses:
+        "200":
+          description: Información del juego modificada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+        "404":
+          description: Juego no encontrado en la biblioteca del usuario.
+    delete:
+      summary: Eliminar juego de la biblioteca del usuario
+      description: Elimina un juego de la biblioteca del usuario.
+      responses:
+        "204":
+          description: Juego eliminado exitosamente de la biblioteca del usuario.
+        "404":
+          description: Juego no encontrado en la biblioteca del usuario.
+  /usuarios/{usuario_id}/tienda:
+    get:
+      summary: Obtener juegos en la tienda de un usuario
+      description: Obtiene los juegos que el usuario está ofreciendo para su venta.
+      parameters:
+        - name: usuario_id
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Juegos en la tienda obtenidos exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juegosTienda"
+    post:
+      summary: Añadir juego a la tienda de un usuario
+      description: Añade un nuevo juego a la tienda del usuario para su venta.
+      parameters:
+        - name: usuario_id
+          in: path
+          description: ID del usuario
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/juego"
+      responses:
+        "201":
+          description: Juego añadido exitosamente a la tienda del usuario.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+  /usuarios/{usuario_id}/tienda/{juego_id}:
+    parameters:
+      - name: usuario_id
+        in: path
+        description: ID del usuario
+        required: true
+        schema:
+          type: string
+      - name: juego_id
+        in: path
+        description: ID del juego
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Obtener información de un juego en la tienda del usuario
+      description: Obtiene información detallada de un juego en la tienda del usuario.
+      responses:
+        "200":
+          description: Información del juego obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+        "404":
+          description: Juego no encontrado en la tienda del usuario.
+    put:
+      summary: Modificar información de un juego en la tienda del usuario
+      description: Modifica la información de un juego en la tienda del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/juego"
+      responses:
+        "200":
+          description: Información del juego modificada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/juego"
+        "404":
+          description: Juego no encontrado en la tienda del usuario.
+    delete:
+      summary: Eliminar juego de la tienda del usuario
+      description: Elimina un juego de la tienda del usuario.
+      responses:
+        "204":
+          description: Juego eliminado exitosamente de la tienda del usuario.
+        "404":
+          description: Juego no encontrado en la tienda del usuario.
+components:
+  schemas:
+    perfilUsuario:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único del usuario.
+        nombre:
+          type: string
+          description: Nombre del usuario.
+        apellido:
+          type: string
+          description: Apellido del usuario.
+      example:
+        id: 12345
+        nombre: Juan
+        apellido: Pérez
+    juego:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único del juego.
+        nombre:
+          type: string
+          description: Nombre del juego.
+        estado:
+          type: string
+          description: Estado del juego ("en propiedad" o "en venta").
+      example:
+        id: abc123
+        nombre: The Witcher 3
+        estado: en propiedad
+    juegosBiblioteca:
+      type: array
+      items:
+        $ref: "#/components/schemas/juego"
+      description: Lista de juegos en la biblioteca de un usuario.
+    juegosTienda:
+      type: array
+      items:
+        $ref: "#/components/schemas/juego"
+      description: Lista de juegos en la tienda de un usuario.
+servers:
+  - url: 'http://localhost:3000'
