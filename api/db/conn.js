@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 const connectionString = process.env.MONGODB_URI;
 console.log(connectionString);
-const client = new MongoClient(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(connectionString);
 
 let dbConnection;
 
