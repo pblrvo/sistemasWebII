@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
+const axios = require('axios');
+const parser = require('xml2json');
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS, 10);
 
 // Obtener juegos
@@ -26,6 +28,22 @@ router.get('/', async (req, res) => {
 
   next = results.length === limit ? results[results.length - 1]._id : null;
   res.render('juegos', { results, next });
+});
+
+router.get('/informacion-externa-xml', async (req, res) => {
+  try {
+    // Hacer una solicitud a la API externa que devuelve datos en formato XML
+    const response = await axios.get('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=xml');
+
+    // Convertir los datos XML en JSON
+    const jsonData = parser.toJson(response.data, { object: true });
+
+    // Aquí podrías procesar los datos como desees y enviarlos como respuesta
+    res.json(jsonData);
+  } catch (error) {
+    console.error('Error al obtener los datos de la API externa:', error);
+    res.status(500).send('Error al obtener los datos de la API externa');
+  }
 });
 
 // Obtener juego por ID
