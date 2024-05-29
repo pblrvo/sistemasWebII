@@ -13,9 +13,12 @@ router.get('/', async (req, res) => {
     limit = Math.min(parseInt(req.query.limit, 10), MAX_RESULTS);
   }
   let next = req.query.next;
+  let prev = req.query.prev;
   let query = {};
   if (next) {
     query = { _id: { $lt: new ObjectId(next) } };
+  } else if (prev) {
+    query = { _id: { $gt: new ObjectId(prev) } };
   }
   const dbConnect = dbo.getDb();
   let results = await dbConnect
@@ -27,7 +30,10 @@ router.get('/', async (req, res) => {
     .catch(err => res.status(400).send('Error al buscar juegos'));
 
   next = results.length === limit ? results[results.length - 1]._id : null;
-  res.render('juegos', { results, next });
+  const hasMore = await dbConnect.collection('juegos').countDocuments({ _id: { $gt: results[results.length - 1]._id } }) > 0;
+  prev = hasMore ? results[0]._id : null;
+
+  res.render('juegos', { results, next, prev });
 });
 
 router.get('/informacion-externa-xml', async (req, res) => {
