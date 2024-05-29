@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const peliculasRouter = require('./routes/peliculas');
+const juegosRouter = require('./routes/juegos'); // Cambiado de peliculas a juegos
 
 let app = express();
 
@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use(process.env.BASE_URI + '/peliculas', peliculasRouter);
+app.use(process.env.BASE_URI + '/juegos', juegosRouter); // Cambiado de peliculas a juegos
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -38,4 +38,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app; // Corregido `module.exports` que estaba incorrecto
