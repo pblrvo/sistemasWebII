@@ -38,19 +38,30 @@ router.get('/', async (req, res) => {
 
 router.get('/informacion-externa-xml', async (req, res) => {
   try {
-    // Hacer una solicitud a la API externa que devuelve datos en formato XML
-    const response = await axios.get('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=xml');
-
-    // Convertir los datos XML en JSON
+    const count = req.query.count || 3;
+    const currentOffset = Math.floor(Date.now() / 1000); // Obtener la fecha y hora actual en segundos
+    const response = await axios.get(`http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=${count}&maxlength=300&format=xml&enddate=${currentOffset}`);
     const jsonData = parser.toJson(response.data, { object: true });
-
-    // Aquí podrías procesar los datos como desees y enviarlos como respuesta
-    res.json(jsonData);
+    res.render('informacion-externa', { data: jsonData, offset: currentOffset });
   } catch (error) {
     console.error('Error al obtener los datos de la API externa:', error);
     res.status(500).send('Error al obtener los datos de la API externa');
   }
 });
+
+
+router.get('/juegos-gratuitos', async (req, res) => {
+  try {
+    const response = await axios.get('https://www.freetogame.com/api/games');
+    const juegos = response.data;
+
+    res.render('juegos-gratuitos', { juegos });
+  } catch (error) {
+    console.error('Error al obtener los datos de la API de FreeToGame:', error);
+    res.status(500).send('Error al obtener los datos de la API de FreeToGame');
+  }
+});
+
 
 // Obtener juego por ID
 router.get('/:name', async (req, res) => {
