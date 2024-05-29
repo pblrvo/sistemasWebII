@@ -53,9 +53,9 @@ router.get('/informacion-externa-xml', async (req, res) => {
 });
 
 // Obtener juego por ID
-router.get('/:id', async (req, res) => {
+router.get('/:name', async (req, res) => {
   const dbConnect = dbo.getDb();
-  let query = { _id: new ObjectId(req.params.id) };
+  let query = { name: req.params.name };
   let result = await dbConnect.collection('juegos').findOne(query);
   if (!result) {
     res.status(404).send("Not found");
