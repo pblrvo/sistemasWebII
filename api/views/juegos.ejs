@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Listado de Juegos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+      .game-image {
+        max-width: 200px;
+        max-height: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">Listado de Juegos</h1>
+      <div class="row">
+        <% results.forEach(function(juego) { %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img
+              src="<%= juego[Object.keys(juego)[0]].header_image %>"
+              class="card-img-top game-image"
+              alt="<%= juego[Object.keys(juego)[0]].name %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= juego[Object.keys(juego)[0]].name %></h5>
+              <p class="card-text"><%= juego[Object.keys(juego)[0]].short_description %></p>
+              <p class="card-text">Precio: $<%= juego[Object.keys(juego)[0]].price %></p>
+              <p class="card-text">Fecha de Lanzamiento: <%= juego[Object.keys(juego)[0]].release_date %></p>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <% if (next) { %>
+      <div class="mt-4">
+        <a href="?next=<%= next %>" class="btn btn-primary">Siguiente</a>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>

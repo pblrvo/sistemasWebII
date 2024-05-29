@@ -17,14 +17,15 @@ router.get('/', async (req, res) => {
   }
   const dbConnect = dbo.getDb();
   let results = await dbConnect
-    .collection('juegos')  // Corregido el nombre de la colección
+    .collection('juegos')
     .find(query)
     .sort({ _id: -1 })
     .limit(limit)
     .toArray()
     .catch(err => res.status(400).send('Error al buscar juegos'));
+
   next = results.length === limit ? results[results.length - 1]._id : null;
-  res.status(200).json({ results, next });
+  res.render('juegos', { results, next });
 });
 
 // Obtener juego por ID
@@ -69,4 +70,4 @@ router.delete('/:id', async (req, res) => {
   res.status(200).send(result);
 });
 
-module.exports = router;  // Corregido el nombre de la propiedad
+module.exports = router;
