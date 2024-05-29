@@ -27,6 +27,16 @@
               <p class="card-text"><%= juego[Object.keys(juego)[0]].short_description %></p>
               <p class="card-text">Precio: $<%= juego[Object.keys(juego)[0]].price %></p>
               <p class="card-text">Fecha de Lanzamiento: <%= juego[Object.keys(juego)[0]].release_date %></p>
+              <p class="card-text">
+                Categorías: <% juego[Object.keys(juego)[0]].categories.forEach(function(category) { %>
+                <span class="badge badge-primary"><%= category %></span>
+                <% }); %>
+              </p>
+              <p class="card-text">
+                Géneros: <% juego[Object.keys(juego)[0]].genres.forEach(function(genre) { %>
+                <span class="badge badge-secondary"><%= genre %></span>
+                <% }); %>
+              </p>
             </div>
           </div>
         </div>
@@ -34,7 +44,11 @@
       </div>
       <% if (next) { %>
       <div class="mt-4">
+        <% if (prev) { %>
+        <a href="?prev=<%= prev %>" class="btn btn-secondary mr-2">Anterior</a>
+        <% } %> <% if (next) { %>
         <a href="?next=<%= next %>" class="btn btn-primary">Siguiente</a>
+        <% } %>
       </div>
       <% } %>
     </div>
