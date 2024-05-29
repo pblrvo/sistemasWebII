@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
-const MAX_RESULTS = parseInt(process.env.MAX_RESULTS);
+const MAX_RESULTS = parseInt(process.env.MAX_RESULTS, 10);
 
 // Obtener juegos
 router.get('/', async (req, res) => {
   let limit = MAX_RESULTS;
   if (req.query.limit) {
-    limit = Math.min(parseInt(req.query.limit), MAX_RESULTS);
+    limit = Math.min(parseInt(req.query.limit, 10), MAX_RESULTS);
   }
   let next = req.query.next;
   let query = {};
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
   const dbConnect = dbo.getDb();
   let results = await dbConnect
-    .collection('juegosDB')
+    .collection('juegos')  // Corregido el nombre de la colección
     .find(query)
     .sort({ _id: -1 })
     .limit(limit)
@@ -69,4 +69,4 @@ router.delete('/:id', async (req, res) => {
   res.status(200).send(result);
 });
 
-module.exports = router;
+module.exports = router;  // Corregido el nombre de la propiedad
