@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
   const dbConnect = dbo.getDb();
   let results = await dbConnect
-    .collection('juegos')
+    .collection('juegosDB')
     .find(query)
     .sort({ _id: -1 })
     .limit(limit)
