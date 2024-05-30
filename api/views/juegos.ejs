@@ -7,18 +7,58 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
     <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .card {
+        border: none;
+        transition: transform 0.3s;
+        height: 100%;
+      }
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
       .game-image {
-        max-width: 200px;
-        max-height: 120px;
+        max-width: 100%;
+        height: auto;
+        border-bottom: 1px solid #dee2e6;
+      }
+      .card-body {
+        background-color: #fff;
+      }
+      .badge-primary {
+        background-color: #007bff;
+      }
+      .badge-secondary {
+        background-color: #6c757d;
+      }
+      .btn-outline-success {
+        color: #28a745;
+        border-color: #28a745;
+      }
+      .btn-outline-success:hover {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .card-title {
+        color: #343a40;
+      }
+      .card-text {
+        color: #6c757d;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1 class="my-4">Listado de Juegos</h1>
+      <h1 class="my-4 text-center">Listado de Juegos</h1>
       
       <!-- Formulario de búsqueda -->
-      <form class="form-inline my-4" method="GET" action="<%= process.env.BASE_URI %>/juegos/">
+      <form class="form-inline justify-content-center my-4" method="GET" action="<%= process.env.BASE_URI %>/juegos/">
         <input
           class="form-control mr-sm-2"
           type="search"
@@ -30,45 +70,49 @@
       </form>
       
       <div class="row">
-        <% results.forEach(function(juego) { %>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img
-              src="<%= juego.header_image %>"
-              class="card-img-top game-image"
-              alt="<%= juego.name %>"
-            />
-            <div class="card-body">
-              <h5 class="card-title"><%= juego.name %></h5>
-              <p class="card-text"><%= juego.short_description %></p>
-              <p class="card-text">Precio: $<%= juego.price %></p>
-              <p class="card-text">Fecha de Lanzamiento: <%= juego.release_date %></p>
-              <p class="card-text">
-                Categorías:
-                <% juego.categories.forEach(function(category) { %>
-                <span class="badge badge-primary"><%= category %></span>
-                <% }); %>
-              </p>
-              <p class="card-text">
-                Géneros:
-                <% juego.genres.forEach(function(genre) { %>
-                <span class="badge badge-secondary"><%= genre %></span>
-                <% }); %>
-              </p>
+        <% results.forEach(function(juego, index) { %>
+          <div class="col-md-4 mb-4">
+            <div class="card w-100">
+              <img
+                src="<%= juego.header_image %>"
+                class="card-img-top game-image"
+                alt="<%= juego.name %>"
+              />
+              <div class="card-body">
+                <h5 class="card-title"><%= juego.name %></h5>
+                <p class="card-text"><%= juego.short_description %></p>
+                <p class="card-text"><strong>Precio:</strong> $<%= juego.price %></p>
+                <p class="card-text"><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
+                <p class="card-text">
+                  <strong>Categorías:</strong>
+                  <% juego.categories.forEach(function(category) { %>
+                    <span class="badge badge-primary"><%= category %></span>
+                  <% }); %>
+                </p>
+                <p class="card-text">
+                  <strong>Géneros:</strong>
+                  <% juego.genres.forEach(function(genre) { %>
+                    <span class="badge badge-secondary"><%= genre %></span>
+                  <% }); %>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+          <% if ((index + 1) % 3 === 0 && index !== results.length - 1) { %>
+            </div>
+            <div class="row">
+          <% } %>
         <% }); %>
       </div>
       <% if (next || prev) { %>
-      <div class="mt-4">
-        <% if (prev) { %>
-        <a href="?prev=<%= prev %>" class="btn btn-secondary mr-2">Anterior</a>
-        <% } %>
-        <% if (next) { %>
-        <a href="?next=<%= next %>" class="btn btn-primary">Siguiente</a>
-        <% } %>
-      </div>
+        <div class="mt-4 text-center">
+          <% if (prev) { %>
+            <a href="?prev=<%= prev %>" class="btn btn-secondary mr-2">Anterior</a>
+          <% } %>
+          <% if (next) { %>
+            <a href="?next=<%= next %>" class="btn btn-primary">Siguiente</a>
+          <% } %>
+        </div>
       <% } %>
     </div>
   </body>
