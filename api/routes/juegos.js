@@ -15,11 +15,20 @@ router.get('/', async (req, res) => {
   let next = req.query.next;
   let prev = req.query.prev;
   let query = {};
+  let search = req.query.search;
+
   if (next) {
     query = { _id: { $lt: new ObjectId(next) } };
   } else if (prev) {
     query = { _id: { $gt: new ObjectId(prev) } };
   }
+
+  if (search) {
+    query.name = { $regex: search, $options: 'i' }; // Búsqueda insensible a mayúsculas/minúsculas
+  }
+
+  console.log('Query:', query); // Log del query
+
   const dbConnect = dbo.getDb();
   let results = await dbConnect
     .collection('juegos')
@@ -27,7 +36,12 @@ router.get('/', async (req, res) => {
     .sort({ _id: -1 })
     .limit(limit)
     .toArray()
-    .catch(err => res.status(400).send('Error al buscar juegos'));
+    .catch(err => {
+      console.error('Error al buscar juegos:', err);
+      res.status(400).send('Error al buscar juegos');
+    });
+
+  console.log('Results:', results); // Log de los resultados
 
   next = results.length === limit ? results[results.length - 1]._id : null;
   const hasMore = await dbConnect.collection('juegos').countDocuments({ _id: { $gt: results[results.length - 1]._id } }) > 0;
@@ -36,6 +50,7 @@ router.get('/', async (req, res) => {
   res.render('juegos', { results, next, prev });
 });
 
+// Obtener datos externos en formato XML
 router.get('/informacion-externa-xml', async (req, res) => {
   try {
     const count = req.query.count || 3;
@@ -49,7 +64,7 @@ router.get('/informacion-externa-xml', async (req, res) => {
   }
 });
 
-
+// Obtener juegos gratuitos
 router.get('/juegos-gratuitos', async (req, res) => {
   try {
     const response = await axios.get('https://www.freetogame.com/api/games');
@@ -62,8 +77,7 @@ router.get('/juegos-gratuitos', async (req, res) => {
   }
 });
 
-
-// Obtener juego por ID
+// Obtener juego por nombre
 router.get('/:name', async (req, res) => {
   const dbConnect = dbo.getDb();
   let query = { name: req.params.name };

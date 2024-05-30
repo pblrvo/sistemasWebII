@@ -16,6 +16,19 @@
   <body>
     <div class="container">
       <h1 class="my-4">Listado de Juegos</h1>
+      
+      <!-- Formulario de búsqueda -->
+      <form class="form-inline my-4" method="GET" action="<%= process.env.BASE_URI %>/juegos/">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Buscar por título"
+          aria-label="Buscar"
+          name="search"
+        />
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+      </form>
+      
       <div class="row">
         <% results.forEach(function(juego) { %>
         <div class="col-md-4 mb-4">
@@ -47,7 +60,7 @@
         </div>
         <% }); %>
       </div>
-      <% if (next) { %>
+      <% if (next || prev) { %>
       <div class="mt-4">
         <% if (prev) { %>
         <a href="?prev=<%= prev %>" class="btn btn-secondary mr-2">Anterior</a>

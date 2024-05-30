@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+require('dotenv').config(); // Asegúrate de requerir dotenv para usar variables de entorno
 
 const indexRouter = require('./routes/index');
 const juegosRouter = require('./routes/juegos'); 
@@ -19,8 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const baseUri = process.env.BASE_URI || '/api/v1'; // Define un valor predeterminado si no está configurado
+
 app.use('/', indexRouter);
-app.use(process.env.BASE_URI + '/juegos', juegosRouter); 
+app.use(baseUri + '/juegos', juegosRouter); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -38,4 +41,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app; // Corregido `module.exports` que estaba incorrecto
+module.exports = app;
