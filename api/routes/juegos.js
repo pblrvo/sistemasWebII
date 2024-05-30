@@ -51,7 +51,7 @@ router.get('/', async (req, res) => {
 });
 
 // Obtener datos externos en formato XML
-router.get('/informacion-externa-xml', async (req, res) => {
+router.get('/noticias', async (req, res) => {
   try {
     const count = req.query.count || 3;
     const currentOffset = Math.floor(Date.now() / 1000); // Obtener la fecha y hora actual en segundos
