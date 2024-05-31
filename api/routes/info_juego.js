@@ -21,18 +21,4 @@ router.get('/:_id', async (req, res) => {
   }
 });
 
-// Eliminar un juego por ID
-router.delete('/:_id', async (req, res) => { // Asegúrate de que esté usando 'router.delete()'
-  const dbConnect = dbo.getDb();
-  const query = { _id: new ObjectId(req.params._id) };
-  
-  try {
-    await dbConnect.collection('juegos').deleteOne(query);
-    res.redirect('/api/v1/juegos');
-  } catch (err) {
-    console.error('Error al eliminar el juego:', err);
-    res.status(500).send('Error al eliminar el juego');
-  }
-});
-
 module.exports = router;
