@@ -3,15 +3,15 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
-const juegosRouter = require('./routes/juegos'); 
-const newGameRouter = require('./routes/new_game'); 
-const noticiasRouter = require('./routes/noticias'); 
-const juegosGratuitosRouter = require('./routes/juegos-gratuitos'); 
-const infoJuegoRouter = require('./routes/info_juego'); 
-const editJuegoRouter = require('./routes/edit_juego'); 
+const juegosRouter = require('./routes/juegos');
+const newGameRouter = require('./routes/new_game');
+const noticiasRouter = require('./routes/noticias');
+const juegosGratuitosRouter = require('./routes/juegos-gratuitos');
+const infoJuegoRouter = require('./routes/info_juego');
+const editJuegoRouter = require('./routes/edit_juego');
 
 let app = express();
 
@@ -27,6 +27,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const baseUri = process.env.BASE_URI || '/api/v1';
 
+// Ruta de redirección
+app.get(baseUri, function (req, res, next) {
+  res.redirect(baseUri + '/juegos');
+});
+
 app.use('/', indexRouter);
 app.use(baseUri + '/juegos', juegosRouter);
 app.use(baseUri + '/new_game', newGameRouter);
@@ -36,12 +41,12 @@ app.use(baseUri + '/info_juego', infoJuegoRouter);
 app.use(baseUri + '/edit_juego', editJuegoRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
