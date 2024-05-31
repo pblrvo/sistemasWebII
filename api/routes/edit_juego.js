@@ -37,11 +37,12 @@ router.post('/:_id', async (req, res) => {
   };
 
   try {
+    const baseUri = process.env.BASE_URI || '/api/v1'; // Define baseUri aquí
     const result = await dbConnect.collection('juegos').updateOne(query, update);
     if (result.matchedCount === 0) {
       res.status(404).send("Juego no encontrado para actualizar");
     } else {
-      res.redirect(`${baseUri}/info_juego/${req.params._id}`);
+      res.redirect(`${baseUri}/info_juego/${req.params._id}`); // Usa baseUri aquí
     }
   } catch (err) {
     console.error('Error al actualizar el juego:', err);
