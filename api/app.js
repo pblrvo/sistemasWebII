@@ -7,6 +7,7 @@ require('dotenv').config(); // Asegúrate de requerir dotenv para usar variables
 
 const indexRouter = require('./routes/index');
 const juegosRouter = require('./routes/juegos'); 
+const infoJuegoRouter = require('./routes/info_juego'); // Agrega esto
 
 let app = express();
 
@@ -24,6 +25,7 @@ const baseUri = process.env.BASE_URI || '/api/v1'; // Define un valor predetermi
 
 app.use('/', indexRouter);
 app.use(baseUri + '/juegos', juegosRouter); 
+app.use(baseUri + '/juego', infoJuegoRouter); // Agrega esto
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

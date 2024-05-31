@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Editar Juego</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .card {
+        border: none;
+        transition: transform 0.3s;
+      }
+      .card-body {
+        background-color: #fff;
+      }
+      .badge-primary {
+        background-color: #007bff;
+      }
+      .badge-secondary {
+        background-color: #6c757d;
+      }
+      .btn-outline-success {
+        color: #28a745;
+        border-color: #28a745;
+      }
+      .btn-outline-success:hover {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .card-title {
+        color: #343a40;
+      }
+      .card-text {
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4 text-center">Editar Juego</h1>
+      <div class="card">
+        <div class="card-body">
+          <form action="/api/v1/juego/<%= juego._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name" value="<%= juego.name %>" required />
+            </div>
+            <div class="form-group">
+              <label for="short_description">Descripción Corta</label>
+              <textarea class="form-control" id="short_description" name="short_description" rows="3" required><%= juego.short_description %></textarea>
+            </div>
+            <div class="form-group">
+              <label for="price">Precio</label>
+              <input type="number" class="form-control" id="price" name="price" value="<%= juego.price %>" required />
+            </div>
+            <div class="form-group">
+              <label for="release_date">Fecha de Lanzamiento</label>
+              <input type="date" class="form-control" id="release_date" name="release_date" value="<%= juego.release_date %>" required />
+            </div>
+            <div class="form-group">
+              <label for="categories">Categorías</label>
+              <input type="text" class="form-control" id="categories" name="categories" value="<%= juego.categories.join(', ') %>" required />
+            </div>
+            <div class="form-group">
+              <label for="genres">Géneros</label>
+              <input type="text" class="form-control" id="genres" name="genres" value="<%= juego.genres.join(', ') %>" required />
+            </div>
+            <button type="submit" class="btn btn-outline-success">Guardar Cambios</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
