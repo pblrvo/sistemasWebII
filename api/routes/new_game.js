@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const dbo = require('../db/conn');
 
 // Route to display the form
 router.get('/', (req, res) => {
@@ -9,32 +9,34 @@ router.get('/', (req, res) => {
 
 // Route to handle form submission
 router.post('/', async (req, res) => {
+  const dbConnect = dbo.getDb();
+  
   const { header_image, name, short_description, price, release_date, categories, genres } = req.body;
 
-  // Convert categories and genres to arrays
   const categoriesArray = categories.split(',').map(item => item.trim());
   const genresArray = genres.split(',').map(item => item.trim());
 
   try {
-    // Create a new game instance
-    const newGame = new Game({
-      header_image,
+    const newGame = {
+      header_image, // URL provided by the user
       name,
       short_description,
       price,
       release_date,
       categories: categoriesArray,
       genres: genresArray
-    });
+    };
 
-    // Save the game to the database
-    await newGame.save();
+    const result = await dbConnect.collection('juegos').insertOne(newGame);
 
-    // Redirect to the list of games (or any other page you want)
-    res.redirect('/juegos');
-  } catch (error) {
-    console.error('Error creating new game:', error);
-    res.status(500).send('Internal Server Error');
+    if (result.acknowledged) {
+      res.redirect('/api/v1/juegos'); // Redirect to the list of games
+    } else {
+      res.status(500).send("No se pudo crear el juego");
+    }
+  } catch (err) {
+    console.error('Error al crear el juego:', err);
+    res.status(500).send('Error al crear el juego');
   }
 });
 

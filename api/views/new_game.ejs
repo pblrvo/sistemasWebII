@@ -17,10 +17,10 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
-            <form method="POST" action="<%= process.env.BASE_URI %>/juegos" enctype="multipart/form-data">
+            <form method="POST" action="/api/v1/new_game">
               <div class="form-group">
-                <label for="header_image">Imagen del Juego</label>
-                <input type="file" class="form-control-file" id="header_image" name="header_image" required>
+                <label for="header_image">URL de la Imagen del Juego</label>
+                <input type="url" class="form-control" id="header_image" name="header_image" placeholder="URL de la Imagen del Juego" required>
               </div>
               <div class="form-group">
                 <label for="name">Título</label>
@@ -48,11 +48,9 @@
               </div>
               <button type="submit" class="btn btn-primary btn-block">Crear Juego</button>
             </form>
-            <button onclick="window.location.href='<%= process.env.BASE_URI %>/juegos'" class="btn btn-secondary btn-block mt-3">Volver a Listado de Juegos</button>
+            <button onclick="window.location.href='/api/v1/juegos'" class="btn btn-secondary btn-block mt-3">Volver a Listado de Juegos</button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-</html>
+ 
