@@ -7,6 +7,7 @@ require('dotenv').config(); // Asegúrate de requerir dotenv para usar variables
 
 const indexRouter = require('./routes/index');
 const juegosRouter = require('./routes/juegos'); 
+const newGameRouter = require('./routes/new_game'); 
 const noticiasRouter = require('./routes/noticias'); 
 const juegosGratuitosRouter = require('./routes/juegos-gratuitos'); 
 
@@ -26,6 +27,7 @@ const baseUri = process.env.BASE_URI || '/api/v1'; // Define un valor predetermi
 
 app.use('/', indexRouter);
 app.use(baseUri + '/juegos', juegosRouter);
+app.use(baseUri + '/new_game', newGameRouter);
 app.use(baseUri + '/noticias', noticiasRouter);
 app.use(baseUri + '/juegos-gratuitos', juegosGratuitosRouter);
 
