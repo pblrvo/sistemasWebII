@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= juego.name %> - Información del Juego</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1><%= juego.name %></h1>
+    <p><%= juego.short_description %></p>
+    <p><strong>Precio:</strong> $<%= juego.price %></p>
+    <p><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
+    <p><strong>Categorías:</strong> <%= juego.categories.join(', ') %></p>
+    <p><strong>Géneros:</strong> <%= juego.genres.join(', ') %></p>
+    <a href="<%= baseUri %>/edit_juego/<%= juego._id %>" class="btn btn-primary">Editar</a>
+    <form action="<%= baseUri %>/juegos/<%= juego._id %>" method="POST" style="display:inline;">
+      <input type="hidden" name="_method" value="DELETE" />
+      <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+  </div>
+</body>
+</html>
