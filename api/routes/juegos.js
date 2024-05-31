@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
-const axios = require('axios');
-const parser = require('xml2json');
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS, 10);
 
 // Obtener juegos
@@ -48,19 +46,6 @@ router.get('/', async (req, res) => {
   prev = hasMore ? results[0]._id : null;
 
   res.render('juegos', { results, next, prev });
-});
-
-// Obtener juegos gratuitos
-router.get('/juegos-gratuitos', async (req, res) => {
-  try {
-    const response = await axios.get('https://www.freetogame.com/api/games');
-    const juegos = response.data;
-
-    res.render('juegos-gratuitos', { juegos });
-  } catch (error) {
-    console.error('Error al obtener los datos de la API de FreeToGame:', error);
-    res.status(500).send('Error al obtener los datos de la API de FreeToGame');
-  }
 });
 
 // Obtener juego por nombre
