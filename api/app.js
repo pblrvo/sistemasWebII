@@ -9,6 +9,8 @@ const indexRouter = require('./routes/index');
 const juegosRouter = require('./routes/juegos'); 
 const noticiasRouter = require('./routes/noticias'); 
 const juegosGratuitosRouter = require('./routes/juegos-gratuitos'); 
+const infoJuegoRouter = require('./routes/info_juego'); 
+const editJuegoRouter = require('./routes/edit_juego'); 
 
 let app = express();
 
@@ -22,12 +24,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const baseUri = process.env.BASE_URI || '/api/v1'; // Define un valor predeterminado si no está configurado
+const baseUri = process.env.BASE_URI || '/api/v1';
 
 app.use('/', indexRouter);
 app.use(baseUri + '/juegos', juegosRouter);
 app.use(baseUri + '/noticias', noticiasRouter);
 app.use(baseUri + '/juegos-gratuitos', juegosGratuitosRouter);
+app.use(baseUri + '/info_juego', infoJuegoRouter);
+app.use(baseUri + '/edit_juego', editJuegoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

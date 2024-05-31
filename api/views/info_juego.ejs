@@ -1,80 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Información del Juego</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <style>
-      body {
-        background-color: #f8f9fa;
-        font-family: 'Arial', sans-serif;
-      }
-      .container {
-        margin-top: 50px;
-      }
-      .card {
-        border: none;
-        transition: transform 0.3s;
-      }
-      .game-image {
-        max-width: 100%;
-        height: auto;
-        border-bottom: 1px solid #dee2e6;
-      }
-      .card-body {
-        background-color: #fff;
-      }
-      .badge-primary {
-        background-color: #007bff;
-      }
-      .badge-secondary {
-        background-color: #6c757d;
-      }
-      .btn-outline-success {
-        color: #28a745;
-        border-color: #28a745;
-      }
-      .btn-outline-success:hover {
-        background-color: #28a745;
-        color: #fff;
-      }
-      .card-title {
-        color: #343a40;
-      }
-      .card-text {
-        color: #6c757d;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1 class="my-4 text-center"><%= juego.name %></h1>
-      <div class="card">
-        <img src="<%= juego.header_image %>" class="card-img-top game-image" alt="<%= juego.name %>" />
-        <div class="card-body">
-          <h5 class="card-title"><%= juego.name %></h5>
-          <p class="card-text"><%= juego.short_description %></p>
-          <p class="card-text"><strong>Precio:</strong> $<%= juego.price %></p>
-          <p class="card-text"><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
-          <p class="card-text">
-            <strong>Categorías:</strong>
-            <% juego.categories.forEach(function(category) { %>
-              <span class="badge badge-primary"><%= category %></span>
-            <% }); %>
-          </p>
-          <p class="card-text">
-            <strong>Géneros:</strong>
-            <% juego.genres.forEach(function(genre) { %>
-              <span class="badge badge-secondary"><%= genre %></span>
-            <% }); %>
-          </p>
-          <div class="d-flex justify-content-between mt-4">
-            <a href="/api/v1/juego/<%= juego._id %>/edit" class="btn btn-outline-success">Editar</a>
-            <form action="/api/v1/juego/<%= juego._id %>?_method=DELETE" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este juego?');">
-              <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+<head>
+  <title><%= juego.name %> - Información del Juego</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1><%= juego.name %></h1>
+    <p><%= juego.short_description %></p>
+    <p><strong>Precio:</strong> $<%= juego.price %></p>
+    <p><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
+    <p><strong>Categorías:</strong> <%= juego.categories.join(', ') %></p>
+    <p><strong>Géneros:</strong> <%= juego.genres.join(', ') %></p>
+    <a href="<%= baseUri %>/edit_juego/<%= juego._id %>" class="btn btn-primary">Editar</a>
+    <form action="<%= baseUri %>/juegos/<%= juego._id %>" method="POST" style="display:inline;">
+      <input type="hidden" name="_method" value="DELETE" />
+      <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+  </div>
+</body>
 </html>
