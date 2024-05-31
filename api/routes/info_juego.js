@@ -22,13 +22,13 @@ router.get('/:_id', async (req, res) => {
 });
 
 // Eliminar un juego por ID
-router.post('/:_id/delete', async (req, res) => {
+router.delete('/:_id', async (req, res) => { // Asegúrate de que esté usando 'router.delete()'
   const dbConnect = dbo.getDb();
   const query = { _id: new ObjectId(req.params._id) };
   
   try {
-    const result = await dbConnect.collection('juegos').deleteOne(query);
-    res.redirect('/juegos'); // Redirigir a la lista de juegos después de eliminar
+    await dbConnect.collection('juegos').deleteOne(query);
+    res.redirect('/api/v1/juegos');
   } catch (err) {
     console.error('Error al eliminar el juego:', err);
     res.status(500).send('Error al eliminar el juego');
