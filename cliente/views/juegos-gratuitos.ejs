@@ -16,9 +16,6 @@
             <div class="card-body">
               <h5 class="card-title"><%= juego.title %></h5>
               <p class="card-text">Género: <%= juego.genre %></p>
-              <p class="card-text">Desarrollador: <%= juego.developer %></p>
-              <p class="card-text">Editor: <%= juego.publisher %></p>
-              <p class="card-text">Fecha de lanzamiento: <%= juego.release_date %></p>
               <a href="<%= juego.game_url %>" class="btn btn-primary" target="_blank">Ver juego</a>
             </div>
           </div>
@@ -28,6 +25,30 @@
       <% } else { %>
       <p>No se encontraron juegos gratuitos.</p>
       <% } %>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= currentPage - 1 %>">Anterior</a>
+          </li>
+      
+          <% 
+            const visiblePages = Math.min(5, totalPages);  // Maximum of 5 pages shown
+            const startIndex = Math.max(Math.ceil(currentPage - visiblePages / 2), 1);  // Calculate starting index for visible page range
+            const endIndex = Math.min(startIndex + visiblePages - 1, totalPages);  // Calculate ending index for visible page range
+          %>
+      
+          <% for (let i = startIndex; i <= endIndex; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+      
+          <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="?page=<%= currentPage + 1 %>">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </body>
 </html>
