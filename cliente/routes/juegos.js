@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const MAX_RESULTS = parseInt(process.env.MAX_RESULTS, 10);
 const axios = require('axios');
+
+const url = 'http://localhost:3010/api/v1/juegos';
 // Obtener juegos
 router.get('/', async (req, res) => {
-    let url = 'http://localhost:3010/api/v1/juegos';  // Replace with your actual API endpoint
     let params = {};
   
     if (req.query.limit) {
@@ -34,14 +35,23 @@ router.get('/', async (req, res) => {
 
 // Obtener juego por nombre
 router.get('/:name', async (req, res) => {
-  const dbConnect = dbo.getDb();
-  let query = { name: req.params.name };
-  let result = await dbConnect.collection('juegos').findOne(query);
-  if (!result) {
-    res.status(404).send("Not found");
-  } else {
-    res.status(200).send(result);
-  }
+    const gameName = req.params.name;  
+    try {
+      const response = await axios.get(url+"/"+gameName);
+      const gameData = response.data;
+  
+      // Render the details view with game data (replace with your actual view name)
+      res.render('game_details', { game: gameData });
+    } catch (err) {
+      console.error('Error fetching game details:', err);
+      
+      // Handle cases where the game is not found (404) or other errors
+      if (err.response && err.response.status === 404) {
+        res.status(404).render('error', { message: 'Juego no encontrado' }); // Error view with message
+      } else {
+        res.status(500).send('Error al obtener detalles del juego');
+      }
+    }
 });
 
 

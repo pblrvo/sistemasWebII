@@ -23,11 +23,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/juegos', juegosRouter);
-app.use('/noticias', noticiasRouter);
-app.use('/new_game', newGameRouter);
-app.use('/juegos-gratuitos', juegosGratuitosRouter);
+const baseUri = process.env.BASE_URI || '/cliente/v1';
+
+// Ruta de redirección
+app.get(baseUri, function (req, res, next) {
+  res.redirect(baseUri + '/juegos');
+});
+
+app.use(baseUri + '/', indexRouter);
+app.use(baseUri + '/juegos', juegosRouter);
+app.use(baseUri + '/noticias', noticiasRouter);
+app.use(baseUri + '/new_game', newGameRouter);
+app.use(baseUri + '/juegos-gratuitos', juegosGratuitosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

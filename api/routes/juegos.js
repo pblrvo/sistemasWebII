@@ -56,7 +56,7 @@ router.get('/:name', async (req, res) => {
   if (!result) {
     res.status(404).send("Not found");
   } else {
-    res.status(200).send(result);
+    res.json(result);
   }
 });
 

@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
     const response = await axios.post('http://localhost:3010/api/v1/new_game', newGame);
 
     if (response.status === 201) { // Check for successful creation (created status code)
-      res.redirect('/noticias'); // Redirect to the list of games (assuming it exists)
+      res.redirect('juegos'); // Redirect to the list of games (assuming it exists)
     } else {
       console.error('Error creating game on database server:', response.data);
       res.status(response.status).send('Error al crear el juego'); // Forward error status and message
