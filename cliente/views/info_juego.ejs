@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<%- include('header') %>
+<html>
+<head>
+  <title><%= juego.name %> - Información del Juego</title>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1><%= juego.name %></h1>
+    <p><%= juego.short_description %></p>
+    <p><strong>Precio:</strong> $<%= juego.price %></p>
+    <p><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
+    <p><strong>Categorías:</strong> <%= juego.categories.join(', ') %></p>
+    <p><strong>Géneros:</strong> <%= juego.genres.join(', ') %></p>
+    <a href="<%= baseUri %>/edit_juego/<%= juego._id %>" class="btn btn-primary">Editar</a>
+    <form id="deleteForm" action="<%= baseUri %>/info_juego/<%= juego._id %>" method="DELETE"> <!-- Cambiar 'method' a 'DELETE' -->
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="button" onclick="deleteGame()" class="btn btn-danger">Eliminar</button>
+    </form>
+    
+    <!-- Botón para volver a la lista de juegos -->
+    <div class="container mt-3">
+      <a href="<%= baseUri %>/juegos" class="btn btn-primary">Volver a la lista de juegos</a>
+    </div>
+  </div>
+
+  <script>
+    function deleteGame() {
+      if (confirm('¿Estás seguro de que quieres eliminar este juego?')) {
+        fetch('<%= baseUri %>/juegos/<%= juego._id %>', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ _method: 'DELETE' })
+        }).then(response => {
+          if (response.ok) {
+            window.location.href = '<%= baseUri %>/juegos';
+          } else {
+            console.error('Error al eliminar el juego');
+            alert('Error al eliminar el juego');
+          }
+        }).catch(error => {
+          console.error('Error al eliminar el juego:', error);
+          alert('Error al eliminar el juego');
+        });
+      }
+    }
+  </script>
+</body>
+</html>

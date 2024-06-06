@@ -13,7 +13,7 @@ router.get('/:_id', async (req, res) => {
     if (!result) {
       res.status(404).send("Juego no encontrado");
     } else {
-      res.render('info_juego', { juego: result, baseUri: process.env.BASE_URI || '/api/v1' });
+      res.json(result);
     }
   } catch (err) {
     console.error('Error al obtener el juego:', err);

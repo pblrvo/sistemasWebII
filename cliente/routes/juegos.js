@@ -40,14 +40,13 @@ router.get('/:name', async (req, res) => {
       const response = await axios.get(url+"/"+gameName);
       const gameData = response.data;
   
-      // Render the details view with game data (replace with your actual view name)
+      
       res.render('game_details', { game: gameData });
     } catch (err) {
       console.error('Error fetching game details:', err);
       
-      // Handle cases where the game is not found (404) or other errors
       if (err.response && err.response.status === 404) {
-        res.status(404).render('error', { message: 'Juego no encontrado' }); // Error view with message
+        res.status(404).render('error', { message: 'Juego no encontrado' }); 
       } else {
         res.status(500).send('Error al obtener detalles del juego');
       }
@@ -57,10 +56,20 @@ router.get('/:name', async (req, res) => {
 
 // Eliminar juego por ID
 router.delete('/:id', async (req, res) => {
-  const query = { _id: new ObjectId(req.params.id) };
-  const dbConnect = dbo.getDb();
-  let result = await dbConnect.collection('juegos').deleteOne(query);
-  res.status(200).send(result);
+    const gameId = req.params.id;  
+    try {
+      const response = await axios.delete(url+"/"+gameId);
+  
+      if (response.status === 200) {
+        res.status(200).send('ok')
+    } else {
+        console.error('Error deleting game:', response.data);
+        res.status(500).send('Error al eliminar el juego');
+      }
+    } catch (err) {
+      console.error('Error during game deletion:', err);
+      res.status(500).send('Error al eliminar el juego');
+    }
 });
 
 module.exports = router;
