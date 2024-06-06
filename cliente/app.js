@@ -6,6 +6,7 @@ var logger = require('morgan');
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
+var juegosRouter = require('./routes/juegos');
 var noticiasRouter = require('./routes/noticias');
 var newGameRouter = require('./routes/new_game');
 var juegosGratuitosRouter = require('./routes/juegos-gratuitos');
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/juegos', juegosRouter);
 app.use('/noticias', noticiasRouter);
 app.use('/new_game', newGameRouter);
 app.use('/juegos-gratuitos', juegosGratuitosRouter);

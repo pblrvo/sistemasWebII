@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
   const hasMore = await dbConnect.collection('juegos').countDocuments({ _id: { $gt: results[results.length - 1]._id } }) > 0;
   prev = hasMore ? results[0]._id : null;
 
-  res.render('juegos', { results, next, prev });
+  res.json({ results, next, prev });
 });
 
 // Obtener juego por nombre
@@ -60,27 +60,6 @@ router.get('/:name', async (req, res) => {
   }
 });
 
-// Añadir juego
-router.post('/', async (req, res) => {
-  const dbConnect = dbo.getDb();
-  let result = await dbConnect.collection('juegos').insertOne(req.body);
-  res.status(201).send(result);
-});
-
-// Actualizar juego por ID
-router.put('/:id', async (req, res) => {
-  const query = { _id: new ObjectId(req.params.id) };
-  const update = {
-    $set: {
-      titulo: req.body.titulo,
-      descripcion: req.body.descripcion,
-      duracion: req.body.duracion
-    }
-  };
-  const dbConnect = dbo.getDb();
-  let result = await dbConnect.collection('juegos').updateOne(query, update);
-  res.status(200).send(result);
-});
 
 // Eliminar juego por ID
 router.delete('/:id', async (req, res) => {
