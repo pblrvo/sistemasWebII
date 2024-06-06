@@ -8,6 +8,7 @@ require('dotenv').config();
 var indexRouter = require('./routes/index');
 var juegosRouter = require('./routes/juegos');
 var infoJuegoRouter = require('./routes/info_juego');
+var editJuegoRouter = require('./routes/edit_juego');
 var noticiasRouter = require('./routes/noticias');
 var newGameRouter = require('./routes/new_game');
 var juegosGratuitosRouter = require('./routes/juegos-gratuitos');
@@ -34,6 +35,7 @@ app.get(baseUri, function (req, res, next) {
 app.use(baseUri + '/', indexRouter);
 app.use(baseUri + '/juegos', juegosRouter);
 app.use(baseUri + '/info_juego', infoJuegoRouter);
+app.use(baseUri + '/edit_juego', editJuegoRouter);
 app.use(baseUri + '/noticias', noticiasRouter);
 app.use(baseUri + '/new_game', newGameRouter);
 app.use(baseUri + '/juegos-gratuitos', juegosGratuitosRouter);

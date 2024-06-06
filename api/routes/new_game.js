@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
   try {
     const newGame = {
-      header_image, // URL provided by the user
+      header_image, 
       name,
       short_description,
       price,
@@ -26,15 +26,14 @@ router.post('/', async (req, res) => {
     const result = await dbConnect.collection('juegos').insertOne(newGame);
 
     if (result.acknowledged) {
-      // Send a successful response with status code 201 (Created)
-      res.status(201).send({ message: 'Juego creado con éxito' }); // Informative message
+      res.status(201).send({ message: 'Juego creado con éxito' });
     } else {
       console.error('Error creating game:', result);
-      res.status(500).send({ message: 'Error al crear el juego' }); // Generic error message
+      res.status(500).send({ message: 'Error al crear el juego' });
     }
   } catch (err) {
     console.error('Error during game creation:', err);
-    res.status(500).send({ message: 'Error al crear el juego' }); // Generic error message
+    res.status(500).send({ message: 'Error al crear el juego' });
   }
 });
 

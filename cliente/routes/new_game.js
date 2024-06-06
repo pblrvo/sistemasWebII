@@ -6,12 +6,11 @@ router.get('/', (req, res) => {
     res.render('new_game');
   });
 
-// Route to handle form submission
 router.post('/', async (req, res) => {
-  const { header_image, name, short_description, price, release_date, categories, genres } = req.body;
+  const {header_image, name, short_description, price, release_date, categories, genres } = req.body;
 
   const newGame = {
-    header_image, // URL provided by the user
+    header_image,
     name,
     short_description,
     price,

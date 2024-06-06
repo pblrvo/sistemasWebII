@@ -13,7 +13,7 @@ router.get('/:_id', async (req, res) => {
     if (!result) {
       res.status(404).send("Juego no encontrado");
     } else {
-      res.render('edit_juego', { juego: result, baseUri: process.env.BASE_URI || '/api/v1' });
+      res.json(result);
     }
   } catch (err) {
     console.error('Error al obtener el juego para editar:', err);
@@ -22,9 +22,10 @@ router.get('/:_id', async (req, res) => {
 });
 
 // Guardar cambios en la información de un juego
-router.post('/:_id', async (req, res) => {
+router.post('/:id', async (req, res) => {
   const dbConnect = dbo.getDb();
-  const query = { _id: new ObjectId(req.params._id) };
+  const query = { _id: new ObjectId(req.params.id) };
+  console.log("Update query:", query)
   const update = {
     $set: {
       name: req.body.name,
@@ -37,16 +38,15 @@ router.post('/:_id', async (req, res) => {
   };
 
   try {
-    const baseUri = process.env.BASE_URI || '/api/v1'; // Define baseUri aquí
     const result = await dbConnect.collection('juegos').updateOne(query, update);
     if (result.matchedCount === 0) {
       res.status(404).send("Juego no encontrado para actualizar");
     } else {
-      res.redirect(`${baseUri}/info_juego/${req.params._id}`); // Usa baseUri aquí
+      res.status(200).send({ message: 'Juego editado con éxito' });
     }
   } catch (err) {
-    console.error('Error al actualizar el juego:', err);
-    res.status(500).send('Error al actualizar el juego');
+    console.error('Error al actualizar el juego:', query);
+    res.status(500).send('Error al actualizar el juego', query);
   }
 });
 
