@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<%- include('header') %>
+<html>
+  <head>
+    <title>Juegos Gratuitos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="my-4">Juegos Gratuitos</h1>
+      <% if (juegos && juegos.length > 0) { %>
+      <div class="row">
+        <% juegos.forEach(function(juego) { %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= juego.title %></h5>
+              <p class="card-text">Género: <%= juego.genre %></p>
+              <p class="card-text">Desarrollador: <%= juego.developer %></p>
+              <p class="card-text">Editor: <%= juego.publisher %></p>
+              <p class="card-text">Fecha de lanzamiento: <%= juego.release_date %></p>
+              <a href="<%= juego.game_url %>" class="btn btn-primary" target="_blank">Ver juego</a>
+            </div>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <% } else { %>
+      <p>No se encontraron juegos gratuitos.</p>
+      <% } %>
+    </div>
+  </body>
+</html>
