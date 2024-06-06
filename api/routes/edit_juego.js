@@ -25,7 +25,6 @@ router.get('/:_id', async (req, res) => {
 router.post('/:id', async (req, res) => {
   const dbConnect = dbo.getDb();
   const query = { _id: new ObjectId(req.params.id) };
-  console.log("Update query:", query)
   const update = {
     $set: {
       name: req.body.name,
@@ -38,7 +37,9 @@ router.post('/:id', async (req, res) => {
   };
 
   try {
+    console.log("update: ", update)
     const result = await dbConnect.collection('juegos').updateOne(query, update);
+    console.log("Result of update: ",result)
     if (result.matchedCount === 0) {
       res.status(404).send("Juego no encontrado para actualizar");
     } else {
