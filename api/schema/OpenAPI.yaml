@@ -1,259 +1,252 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
-  title: Gametrade
-  description: |
-    API de nuestra página de intercambio de videojuegos
+  title: API de Juegos
+  description: API para manejar juegos, incluyendo creación, edición, eliminación y obtención de información.
   version: 1.0.0
-tags:
-  - name: Gametrade
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+
 paths:
-  /usuarios/{usuario_id}/perfil:
+  /juegos:
     get:
-      summary: Obtener perfil de usuario
-      description: Obtiene el perfil único de un usuario.
+      summary: Obtener juegos
+      description: Obtiene una lista de juegos con soporte para paginación y búsqueda.
       parameters:
-        - name: usuario_id
-          in: path
-          description: ID del usuario
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Límite de resultados a devolver
+        - in: query
+          name: next
+          schema:
+            type: string
+          description: ID del juego a partir del cual obtener los siguientes resultados
+        - in: query
+          name: prev
+          schema:
+            type: string
+          description: ID del juego a partir del cual obtener los resultados anteriores
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Término de búsqueda para buscar juegos por nombre
+      responses:
+        200:
+          description: Lista de juegos obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Game'
+                  next:
+                    type: string
+                    nullable: true
+                  prev:
+                    type: string
+                    nullable: true
+        400:
+          description: Error al buscar juegos
+        500:
+          description: Error interno del servidor
+
+  /juegos/{name}:
+    get:
+      summary: Obtener juego por nombre
+      description: Obtiene un juego por su nombre.
+      parameters:
+        - in: path
+          name: name
           required: true
           schema:
             type: string
+          description: Nombre del juego
       responses:
-        "200":
-          description: Perfil de usuario obtenido exitosamente.
+        200:
+          description: Juego obtenido con éxito
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/perfilUsuario"
-  /usuarios/{usuario_id}/biblioteca:
-    get:
-      summary: Obtener juegos en la biblioteca de un usuario
-      description: Obtiene todos los juegos adquiridos por el usuario.
-      parameters:
-        - name: usuario_id
-          in: path
-          description: ID del usuario
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Juegos en la biblioteca obtenidos exitosamente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juegosBiblioteca"
-    post:
-      summary: Añadir juego a la biblioteca de un usuario
-      description: Añade un nuevo juego a la biblioteca del usuario.
-      parameters:
-        - name: usuario_id
-          in: path
-          description: ID del usuario
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/juego"
-      responses:
-        "201":
-          description: Juego añadido exitosamente a la biblioteca del usuario.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juego"
-  /usuarios/{usuario_id}/biblioteca/{juego_id}:
-    parameters:
-      - name: usuario_id
-        in: path
-        description: ID del usuario
-        required: true
-        schema:
-          type: string
-      - name: juego_id
-        in: path
-        description: ID del juego
-        required: true
-        schema:
-          type: string
-    get:
-      summary: Obtener información de un juego en la biblioteca del usuario
-      description: Obtiene información detallada de un juego en la biblioteca del usuario.
-      responses:
-        "200":
-          description: Información del juego obtenida exitosamente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juego"
-        "404":
-          description: Juego no encontrado en la biblioteca del usuario.
-    put:
-      summary: Modificar información de un juego en la biblioteca del usuario
-      description: Modifica la información de un juego en la biblioteca del usuario.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/juego"
-      responses:
-        "200":
-          description: Información del juego modificada exitosamente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juego"
-        "404":
-          description: Juego no encontrado en la biblioteca del usuario.
+                $ref: '#/components/schemas/Game'
+        404:
+          description: Juego no encontrado
+        500:
+          description: Error interno del servidor
+
+  /juegos/{id}:
     delete:
-      summary: Eliminar juego de la biblioteca del usuario
-      description: Elimina un juego de la biblioteca del usuario.
-      responses:
-        "204":
-          description: Juego eliminado exitosamente de la biblioteca del usuario.
-        "404":
-          description: Juego no encontrado en la biblioteca del usuario.
-  /usuarios/{usuario_id}/tienda:
-    get:
-      summary: Obtener juegos en la tienda de un usuario
-      description: Obtiene los juegos que el usuario está ofreciendo para su venta.
+      summary: Eliminar juego por ID
+      description: Elimina un juego por su ID.
       parameters:
-        - name: usuario_id
-          in: path
-          description: ID del usuario
+        - in: path
+          name: id
           required: true
           schema:
             type: string
+          description: ID del juego
       responses:
-        "200":
-          description: Juegos en la tienda obtenidos exitosamente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juegosTienda"
+        200:
+          description: Juego eliminado con éxito
+        404:
+          description: Juego no encontrado
+        500:
+          description: Error interno del servidor
+
+  /new_game:
     post:
-      summary: Añadir juego a la tienda de un usuario
-      description: Añade un nuevo juego a la tienda del usuario para su venta.
+      summary: Crear un nuevo juego
+      description: Crea un nuevo juego con los datos proporcionados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      responses:
+        201:
+          description: Juego creado con éxito
+        400:
+          description: Error en los datos proporcionados
+        500:
+          description: Error interno del servidor
+
+  /noticias:
+    get:
+      summary: Obtener noticias de juegos
+      description: Obtiene noticias de juegos desde una API externa.
       parameters:
-        - name: usuario_id
-          in: path
-          description: ID del usuario
+        - in: query
+          name: count
+          schema:
+            type: integer
+          description: Número de noticias a obtener
+      responses:
+        200:
+          description: Noticias obtenidas con éxito
+          content:
+            application/xml:
+              schema:
+                type: string
+                format: xml
+        500:
+          description: Error al obtener los datos de la API externa
+
+  /edit_juego/{id}:
+    get:
+      summary: Obtener información de un juego por ID para editar
+      description: Obtiene la información de un juego por su ID.
+      parameters:
+        - in: path
+          name: id
           required: true
           schema:
             type: string
+          description: ID del juego
+      responses:
+        200:
+          description: Información del juego obtenida con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        404:
+          description: Juego no encontrado
+        500:
+          description: Error al obtener el juego
+
+    post:
+      summary: Guardar cambios en la información de un juego
+      description: Guarda los cambios en la información de un juego.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del juego
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/juego"
+              $ref: '#/components/schemas/Game'
       responses:
-        "201":
-          description: Juego añadido exitosamente a la tienda del usuario.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juego"
-  /usuarios/{usuario_id}/tienda/{juego_id}:
-    parameters:
-      - name: usuario_id
-        in: path
-        description: ID del usuario
-        required: true
-        schema:
-          type: string
-      - name: juego_id
-        in: path
-        description: ID del juego
-        required: true
-        schema:
-          type: string
+        200:
+          description: Juego editado con éxito
+        404:
+          description: Juego no encontrado para actualizar
+        500:
+          description: Error al actualizar el juego
+
+  /info_juegos/{id}:
     get:
-      summary: Obtener información de un juego en la tienda del usuario
-      description: Obtiene información detallada de un juego en la tienda del usuario.
+      summary: Obtener información de un juego por ID
+      description: Obtiene la información de un juego por su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del juego
       responses:
-        "200":
-          description: Información del juego obtenida exitosamente.
+        200:
+          description: Información del juego obtenida con éxito
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/juego"
-        "404":
-          description: Juego no encontrado en la tienda del usuario.
-    put:
-      summary: Modificar información de un juego en la tienda del usuario
-      description: Modifica la información de un juego en la tienda del usuario.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/juego"
-      responses:
-        "200":
-          description: Información del juego modificada exitosamente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/juego"
-        "404":
-          description: Juego no encontrado en la tienda del usuario.
-    delete:
-      summary: Eliminar juego de la tienda del usuario
-      description: Elimina un juego de la tienda del usuario.
-      responses:
-        "204":
-          description: Juego eliminado exitosamente de la tienda del usuario.
-        "404":
-          description: Juego no encontrado en la tienda del usuario.
+                $ref: '#/components/schemas/Game'
+        404:
+          description: Juego no encontrado
+        500:
+          description: Error al obtener el juego
+
 components:
   schemas:
-    perfilUsuario:
+    Game:
       type: object
+      required:
+        - _id
+        - header_image
+        - short_description
+        - price
+        - release_date
+        - categories
+        - genres
+
       properties:
-        id:
+        _id:
           type: string
-          description: ID único del usuario.
-        nombre:
+          description: ID del juego
+        header_image:
           type: string
-          description: Nombre del usuario.
-        apellido:
+          description: URL de la imagen del encabezado del juego
+        name:
           type: string
-          description: Apellido del usuario.
-      example:
-        id: 12345
-        nombre: Juan
-        apellido: Pérez
-    juego:
-      type: object
-      properties:
-        id:
+          description: Nombre del juego
+        short_description:
           type: string
-          description: ID único del juego.
-        nombre:
+          description: Descripción breve del juego
+        price:
+          type: number
+          description: Precio del juego
+        release_date:
           type: string
-          description: Nombre del juego.
-        estado:
-          type: string
-          description: Estado del juego ("en propiedad" o "en venta").
-      example:
-        id: abc123
-        nombre: The Witcher 3
-        estado: en propiedad
-    juegosBiblioteca:
-      type: array
-      items:
-        $ref: "#/components/schemas/juego"
-      description: Lista de juegos en la biblioteca de un usuario.
-    juegosTienda:
-      type: array
-      items:
-        $ref: "#/components/schemas/juego"
-      description: Lista de juegos en la tienda de un usuario.
-servers:
-  - url: 'http://localhost:3000'
+          format: date
+          description: Fecha de lanzamiento del juego
+        categories:
+          type: array
+          items:
+            type: string
+          description: Categorías del juego
+        genres:
+          type: array
+          items:
+            type: string
+          description: Géneros del juego
