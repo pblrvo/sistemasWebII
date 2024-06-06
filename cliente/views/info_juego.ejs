@@ -11,6 +11,7 @@
 <body>
   <div class="container mt-5">
     <h1><%= juego.name %></h1>
+    <img src="<%= juego.header_image %>" class="card-img-top game-image" alt="<%= juego.name %>" />
     <p><%= juego.short_description %></p>
     <p><strong>Precio:</strong> $<%= juego.price %></p>
     <p><strong>Fecha de Lanzamiento:</strong> <%= juego.release_date %></p>
