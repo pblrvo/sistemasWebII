@@ -6,7 +6,6 @@ const axios = require('axios');
 router.get('/', async (req, res) => {
     try {
       const response = await axios.get('http://localhost:3010/api/v1/noticias');
-      console.log(response)
       res.render('noticias', { data: response.data.data, offset: response.offset });
     } catch (error) {
       console.error('Error al obtener los datos de la API externa:', error);
