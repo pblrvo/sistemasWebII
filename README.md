@@ -7,7 +7,7 @@ Este proyecto es una API y un cliente web para manejar juegos, incluyendo la cre
 El proyecto está organizado de la siguiente manera:
 
 ```
-D:\Users\Alejandro\Escritorio\sistemasWebII\cliente
+D:\Users\USU\sistemasWebII\cliente
 │
 ├── .env
 ├── app.js
