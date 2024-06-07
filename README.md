@@ -96,7 +96,7 @@ Para ejecutar tanto el cliente como la API, abre dos terminales y ejecuta los si
    npm start
    ```
 
-La aplicación estará disponible en `http://localhost:3000`.
+La aplicación estará disponible en `http://localhost:3000/cliente/v1/juegos`.
 
 ## Documentación de la API
 
