@@ -60,8 +60,8 @@ Para instalar y ejecutar el proyecto localmente, sigue estos pasos:
 1. Clona el repositorio:
 
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
-   cd <NOMBRE_DEL_REPOSITORIO>
+   git clone https://github.com/pblrvo/sistemasWebII.git
+   cd sistemasWebII
    ```
 
 2. Instala Node.js si no lo tienes instalado. Puedes descargarlo desde [aquí](https://nodejs.org/).
